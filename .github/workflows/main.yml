@@ -21,5 +21,22 @@ jobs:
       - name: Build and test with Maven
         run: mvn clean install --file simple-api/pom.xml
 
+        # Builds and pushes Docker images
+  build-and-push-docker-image:
+        if: github.ref == 'refs/heads/main'
+        needs: test-backend
+        runs-on: ubuntu-22.04
+        steps:
+        - uses: actions/checkout@v4
 
+        # Logs in to DockerHub
+        - name: Login to DockerHub
+          run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
+        # Builds and pushes the backend Docker image
+        - name: Build and push backend image
+          uses: docker/build-push-action@v3
+          with:
+            context: ./simple-api
+            tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-simple-api:latest
+            push: ${{ github.ref == 'refs/heads/main' }}
