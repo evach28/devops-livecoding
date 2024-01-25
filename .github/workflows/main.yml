@@ -23,5 +23,7 @@ jobs:
 
       - name: Build and test with Maven
         run: mvn clean install
+        working-directory: ./simple-api\pom.xml
 
-        
+
+
