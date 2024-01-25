@@ -40,3 +40,20 @@ jobs:
             context: ./simple-api
             tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-simple-api:latest
             push: ${{ github.ref == 'refs/heads/main' }}
+
+
+                # Builds and pushes the database Docker image
+        - name: Build and push database image
+          uses: docker/build-push-action@v3
+          with:
+            context: ./database
+            tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-database:latest
+            push: ${{ github.ref == 'refs/heads/main' }}
+
+                # Builds and pushes the database Docker image
+        - name: Build and push httpd Docker image
+          uses: docker/build-push-action@v3
+          with:
+            context: ./http-server
+            tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-httpd-server:latest
+            push: ${{ github.ref == 'refs/heads/main' }}
